@@ -1,3 +1,8 @@
+/*
+
+This particular tutorial is dedicated to my sister, Michy, who will always be my biggest inspiration in life. I miss her more than words can say.
+
+
 
     OK so as mentioned in the READ ME file,
     to keep things relatively simple
@@ -246,14 +251,23 @@ function sequentialSearch(input_id) {
   //Our final WHILE loop... for this tutorial, that is.
   //-in case you need a refresher:
 //  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/while
-  while (index < n) {
-    //    TO DO:
-    //-explain why don't need sentinel for ordered !
-    // but describe each comparison! (i.e., not gonna do that one for this while loop
-    // instead we're gonna BREAK the rules a little)
-    //set the above to true, and use same kinda steps as they have for the sentinel version
+  while (true) {//so this is a tricky thing that I'm doing here, in ORDER to avoid a comparison
+    //if KNOW that you have an ordered list, then you don't have to do the comparison inside this while
+    //if you're going up, you're increasing the index
+    //if you're going down, then you decrease the index
+    // you don't have to check it against the final value every time the loop executes
 
-    if(phoneBook[index] > targetValue){
+    //BUT again, in order to do this I'll have to introduce another short-cut: break;
+    //yes, we're putting on the breaks in our loop! instead of actually comparing values
+    //however this is the way algorithms are measured for efficiency: how many comparisons does it need,
+    // and what's the work involved in order to do that comparison
+
+    //in that wikipedia article:
+    //https://en.wikipedia.org/wiki/Linear_search#With_a_sentinel
+    //we're being told that an ordered list requires a sentinel, but as you can see above that's not true!
+
+    if(phoneBook[index] > targetValue){//FIRST COMPARISON
+      console.log("compare 1");
       //STOP! -you've lost! -the phone number your looking for is NOT here!
            outcomeElem.innerHTML += outcomeMssages[1] + index + "<br/>";
       //here's some more good news:
@@ -266,25 +280,33 @@ function sequentialSearch(input_id) {
       // Can you figure out why?
 
     }//-end first condition
-    else if(targetValue > phoneBook[index]){
+    else if(targetValue > phoneBook[index]){//SECOND COMPARISON
       //Wanna learn more about the else if in JS? https://www.w3schools.com/js/js_if_else.asp
+      console.log("compare 2");
       outcomeElem.innerHTML += outcomeMssages[2] + index + "<br/>";
        index++;
 
-    }
-    else {
-      //here's the winning location!
-          //return phoneBook[index]
-      outcomeElem.innerHTML += outcomeMssages[3] + index + "<br/>";
+    }//end else if
+    else {//we've reached the end of the list! we're done!
+      console.log("it's the end of the line, folks! please exit in an ORDERly fashion, even if you're not at all fashionable.");
+
+      if(targetValue == phoneBook[index]){//here's the winning location!
+        outcomeElem.innerHTML += outcomeMssages[3] + " value of index: " + index + ", target: " + targetValue + "<br/>";
+
+      }else{
+        outcomeElem.innerHTML = "Sorry, yer number ain't in here! Fortunately, we only checked the value at n, which is: " + n + "<br/>";
+
+      }
+
       break;
 
-    }
+    }//end last else
 
   }//END WHILE
 
 }//END sequentialSearch
 
 //Now that we're finished defining our JavaScript functions
-//we can call the first one
-// (which is kinda funny cuz it's a phone book):
+//we can CALL the first one
+// (which is kinda funny cuz it's a phone book, get it? ;)
 printPhoneBook(phoneBook);
