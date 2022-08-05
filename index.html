@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>
+      fwd-tut-3
+    </title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!--
+      You've found it!
+    -->
+
+    <!--
+      So, you've discovered html comments!
+      Excellent work.
+      Now you'll be able to read
+      my explanations about
+      other html tags.
+
+      At the top of this file
+      is a bunch of other tags:
+       DOCTYPE,
+       the html tag itself,
+       a head tag,
+      the title tag,
+       and a few meta tags.
+      For the most part, we're going to leave these tags in
+      and ignore them.
+      These tags give a browser
+      general information about
+      how to interpret the following markup language.
+
+      The only element in this section of the file
+      that we'll change is the "title"
+      element.
+
+      It begins like this:
+      <title>
+
+      and ends like this:
+      </title>
+
+      Any text you put inside
+      the title tag
+      will appear in the name of the tab
+      where your html is displayed.
+
+      When you first open this html file,
+      the content of the title tag
+      should be:
+      "fwd-tut-3".
+      Feel free to change
+      the content of this tag in any way you see fit!
+    -->
+    <link rel="stylesheet" href="/style.css" />
+        <!-- import the webpage's stylesheet
+
+           The style.css file is where we can
+           change numerous details about
+           how a particular section
+           of our page is visually displayed.
+
+           Head on over to that file if
+           you feel like skipping ahead to
+           sizes, colours, and fonts
+           (oh my!).
+
+           We list this file here,
+           in a special "link" tag
+           that tells a browser
+           where the styles for this web page are.
+          -->
+
+     <!-- import the webpage's javascript file -->
+    <script src="/index.js" defer></script>
+
+  </head>
+   <!--
+      Directly above, you'll see the closing tag
+      for the "head" section of this html file.
+      This is the end of a section that contains
+      tags specifying how a browser is to interpret
+      the following html.
+    -->
+
+  <!--
+      Directly below, you'll see an opening tag
+      for the "body" section of this html file.
+
+      The body of an html file is
+      where all the content of a page will be displayed.
+
+      This is where you'll start writing
+      your list poem!
+    -->
+  <body>
+
+    <!--
+
+     In html, there are 6 sizes for a heading.
+     When you're thinking of a heading
+      picture what you'd see on the front page of a magazine,
+     or a tabloid newspaper.
+
+    A heading is always going to be
+    an attention grabber,
+     so use them wisely.
+    They go from largest to smallest
+    starting with
+    <h1>
+    to
+    <h6>.
+
+    Remember, most html requires
+    an opening
+    and a closing
+    tag!
+    -->
+    <h1>
+      whispering-descriptive-pump
+
+    <!--
+      That's our opening <h1> tag!
+      Any text we put inside here
+      has the largest heading size.
+    -->
+    </h1>
+      <!--
+      That's our </h1> closing  tag!
+      Any text we put inside here
+      has the largest heading size.
+    -->
+
+    <h6>
+        <!--
+      This is an example of smallest heading size.
+    -->
+      by christine nicole gibson
+    </h6>
+
+    <h4>
+    Is your phone number in the list below?
+      Use our fancy whispering-descriptive-pump to find out!
+
+    </h4>
+
+          <label for="num-check">Number check (10 digits only!):</label>
+
+<input id="num-check" name="num-check" required
+       minlength="10" maxlength="10" size="10">
+     <button id="submit-search" onclick="sequentialSearch('num-check');">
+          Search ME!
+        </button>
+    <div class="outcome"></div>
+
+    <!--
+      The following html uses the concept of an
+      Ordered List.
+      This time, our list items
+      have a number and an order.
+      By default,
+      the order is always: 1, 2, 3...
+
+      It's possible to change this default style,
+      but you'll need a little extra help for that:
+      https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ol
+    -->
+    <ol id="ordered-list" start="0" class="log">
+
+    </ol>
+
+    <!--
+
+          -we'll discuss the concept of a 'list' and an 'array'
+          -including how these concepts can be used in JavaScript
+
+
+    -->
+
+
+    <!--
+          Include the Glitch button to show what the webpage is about and
+          to make it easier for folks to view source and remix.
+    -->
+    <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
+    <script src="https://button.glitch.me/button.js"></script>
+  </body>
+</html>
