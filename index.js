@@ -4,7 +4,7 @@ This particular tutorial is dedicated to my sister, Michy, who will always be my
 
 
 
-    OK so as mentioned in the READ ME file,
+    As mentioned in the READ ME file,
     to keep things relatively simple
     only numbers will be allowed in our phone book.
     At the same time, remember that
@@ -15,19 +15,7 @@ This particular tutorial is dedicated to my sister, Michy, who will always be my
 
     We'll be looking up one particular phone number
     (chosen by the user)
-    to see if it's in our sorted list,
-    or ordered table as it's called in this Wikipedia article:
-    https://en.wikipedia.org/wiki/Linear_search#In_an_ordered_table
-
-    In that article, when describing the algorithm for an ordered table,
-    the first step we're given is the following:
-    Set i to 0.
-
-    This instruction is telling us to set our search index to 0.
-
-    I'm sorry to say this, but right off the bat
-    I've got a problem with that.
-    If you take a moment to reflect, I think you'll understand why.
+    to see if it's in our sorted list.
 
     Think about how you'd look up an entry in a sorted list,
     like a phone book or a dictionary.
@@ -63,83 +51,82 @@ This particular tutorial is dedicated to my sister, Michy, who will always be my
     start their index at zero
     -it's the kinda thing where you gotta throw up yer hands and say,
     ok fine!
-    (that happens a lot in computer programming but we'll get into that later)
 
-    ANYWAY our handy-dandy, built-in JavaScript Array comes with an index that starts at zero.
+    ANYWAY our handy-dandy JavaScript Array (an object that comes with this language!)
+    similar to most
+    array-like objects
+    comes with an index that starts at zero.
+
+    You might as well get used to it ;)
 
     */
 
 
+//-each of these particular phoneBook Array spots contains a fake phone number
+//-we're trying to be relatively sparse with the data we allow here
+//-in other words, we want to only allow an integer in each spot
+// -for now, we're populating each spot individually (relatively manually)
+
+//Because there are now relatively few phone books still in existence,
+//I'm leaving this hard-coded list in JavaScript.
+//It's also printed out on the page itself.
+
+//I want you to actually look at these numbers, come up with different possible 10-digit integers
+//then think about where in the list you'd start to LOOK for that value.
+
+//Find a number that forces this whispering-descriptive-pump to check every single entry in the list.
+//I'm betting you could spend the rest of your life trying to find a value that trips it up.
+// But you go ahead and try ;)
 const phoneBook = new Array(2895555555, 2896666666, 2897777777,
                             4165555555, 4166666666, 4167777777,
                             9055555555, 9056666666, 9057777777);
-//QUICK GENERAL NOTE:
-//when we use 'i' in this tutorial as a variable
-//it'll stand for the index of the above array
-
-//-each of these particular phoneBook Array spots contains a fake phone number
-//-we'll try to be relatively sparse with the data we allow here
-//-in other words, we want to only allow an integer in each spot
-// -for now, we'll populate each spot individually (relatively manually)
-//-this is called, 'hard-coding' the numbers in our phonedBook
-// because we're not obtaining the data in a programmatic way
-
-// -I'll let you think about ways to populate your Array phoneBook in a more automated kinda way
-//-in part this is because I want to see how individual values are assigned in a JS Array
+//General NOTEs:
+//how values are assigned to specific spots in this JavaScript Array
 
 //0 = 2895555555
 //1 = 2896666666
 //...
 
 //8 = 9057777777
-//note that because we start our Array index at 0
+
+//Because we start our Array index at 0
 // the last index is going to be
-//the length of the Array - 1
-
-//this will be important to keep in mind later on!!
-
-//lets consider an example, like
-//IF the user enters a
-//target value: 5555555555
-//where would you start checking ?
-//intuitively, you probably feel like starting at i=3, or maybe i=4
-//that intuition is perfect!
-
+//the (length of the Array) - 1
+//The JS Array has a property called 'length' that returns the number of elements in your array.
 let n = phoneBook.length;
-//I think technically, this algorithm can be written using just the length of our phonBook,
-//however I want to be explicit about what 'n' is.
-// It's the number of items in our ordered table.
-//-does the sequential search for a sorted list EVER have to check all n items?
-//-the answer is: for n > 3, no NEVER
+//We're letting 'n' store the total number of items in this array.
+//This will be important to keep in mind later on!!
 
-  //-we're allowing 10 digits for our phone numbers
+//Look out! We're about to start printing HTML!
 
-//If you'd like to know more about populating your HTML elements
+//If you'd like to know more about populating HTML elements
 // with JavaScript generated data,
 //checkout this article by the Mozilla Developer Network:
 //https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML#examples
 
 //-below is a function that prints out all the entries in our mock phone book
 function printPhoneBook(passedInPhoneBook) {
-  //The name of the function is: printPhoneBook, and inside the brackets we pass in an arguement that we're calling: passedInPhoneBook
+  //The name of the function is: printPhoneBook, and inside the brackets we pass an arguement that we're calling: passedInPhoneBook
 
   const logElem = document.querySelector(".log");//Here, we're looking in our document
   //for an HTML element with a class="log"
   //Technically,
   //we could pass this string describing a class name
-  //into our printPhoneBook funciton as an additional argument. We'll get more into that in the next tutorial, and leave it like this for now.
+  //into our printPhoneBook funciton as an additional argument.. but that's another story for another day!
 
-  let phoneBookIndx = 0;  //-when we start printing phoneBook entries, we'll being at the first one (where index=0)
+  let phoneBookIndx = 0;  //-when we start printing phoneBook entries, we'll begin at the first one (where index=0)
+  //So this may be the first time you've ever seen a WHILE loop.
+  //Think of it as an easy way to break your computer. Just Kidding!
+  //-the following WHILE loop prints our phonebook numbers out in the html document
 
-  //-the following WHILE loop prints our phonebook numbers in html
   //If you want to learn more about WHILE loops, see here:
   //  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/while
   while (phoneBookIndx < passedInPhoneBook.length) {
     //-if you tinker with this one,
     //then you may get to write your very first infinite loop!!
-    // - look out! yer computer might explode! Just Kidding!
+
     //The idea is that WHILE our phoneBookIndex is less than the length of the book,
-    //we'll print out the phone number at that spot:
+    //we'll add this html(and the variable it contains) to the innerHTML of the "log" element
       logElem.innerHTML +=   "<li>" + passedInPhoneBook[phoneBookIndx] + "</li>";
     // then increment the index of our array.
    phoneBookIndx++;
@@ -149,9 +136,11 @@ function printPhoneBook(passedInPhoneBook) {
 //The argument for our sequentialSearch
 // is the input_id of the html input element. We're using this to store the value of the user's input.
 function sequentialSearch(input_id) {
+  //TIRED, NEED TO EAT SOME FOOD BUT NEXT TIME TO DO:
+  //THIS STUFF BELOW IS A HUGE MESS, FLIPPING FIX IT CHRISTINE!! You picked the messiest possible way to display result messages!
+  //Figure out the correct number of possible outcomes!
   const firstOutcome = "AND the winner is... (drum-roll, please) our MAX value! " + phoneBook[8];
   const outcomeMssages = [firstOutcome, "sorry, yer number ain't in here! the good news is here's the last spot we had to check: ", "indx++", "winning index ="]
-  // There are 4 possible outcomes for this algorithm.
   // Above is an array storing one string message for each outcome.
   const outcomeElem = document.querySelector(".outcome");
   //The html element for our outcomeMessages is designated by this 'outcome' class.
