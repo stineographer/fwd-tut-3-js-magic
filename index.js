@@ -70,15 +70,16 @@ This particular tutorial is dedicated to my sister, Michy, who will always be my
 //I want you to actually look at these numbers, come up with different possible 10-digit integers
 //then think about where in the list you'd start to LOOK for that value.
 const phoneBook = new Array(
-  2895555555,
-  2896666666,
-  2897777777,
-  4165555555,
-  4166666666,
-  4167777777,
+   9050000000,
+  9051111111,
+  9052222222,
+  9053333333,
+  9054444444,
   9055555555,
   9056666666,
-  9057777777
+  9057777777,
+  9058888888
+
 );
 //how values are assigned to specific spots in this JavaScript Array
 //[0] = 2895555555
@@ -125,12 +126,6 @@ function printPhoneBook(passedInPhoneBook) {
   } //end WHILE LOOP
 } //END printPhoneBook function
 
-function startLowGoHigh(){}//end function startLowGoHigh
-
-function startHighGoLow(){
-
-}//end function startHighGoLow
-
 //The argument for our sequentialSearch
 // is the input_id of the html input element. We're using this to store the value of the user's input.
 function sequentialSearch(input_id) {
@@ -172,19 +167,21 @@ function sequentialSearch(input_id) {
   else{//we've got a positive, non-zero distance
     //so we're going to see if our default scale is sufficient for the input
       const minProximity = distance / base ** defaultDifference;//If 0 < maxProximity < 1 THEN we start at MAX value and go down (cuz target is supposed to be less than 1 spot away)
-    //IF minProximity < 1 THEN startingIndex = .length - log10(distance)
-  //ELSE startingIndex = (regular old thing which is parseInt(distance/base**defaultDifference)
+    console.log("minProx calculated: " + minProximity);
 
-    //next check is
     if(minProximity < 1){
-      //set startingIndex accordingly
       console.log("rounded log10(distance) =" + Math.round(Math.log10(distance)));
-      index = parseInt(Math.round(Math.log10(distance)));
+      const lastIndex = n - 1;
+
+      index = parseInt(Math.round(Math.log10(distance)));      //set startingIndex accordingly
+      if((lastIndex - index) <= 1) {//outta bounds check!
+        index = 0;
+      }
     }//end minProxmitity < 1
     else{
       index = parseInt(distance/base**defaultDifference);
       //now have to check for
-          if(index > n){
+          if(index > n){//outta bounds check!
             index = 0;
           }//end check inndex > n
 
