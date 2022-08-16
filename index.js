@@ -70,16 +70,15 @@ This particular tutorial is dedicated to my sister, Michy, who will always be my
 //I want you to actually look at these numbers, come up with different possible 10-digit integers
 //then think about where in the list you'd start to LOOK for that value.
 const phoneBook = new Array(
-   9050000000,
-  9051111111,
-  9052222222,
-  9053333333,
-  9054444444,
+    2895555555,
+  2896666666,
+  2897777777,
+  4165555555,
+  4166666666,
+  4167777777,
   9055555555,
   9056666666,
-  9057777777,
-  9058888888
-
+  9057777777
 );
 //how values are assigned to specific spots in this JavaScript Array
 //[0] = 2895555555
@@ -91,9 +90,8 @@ const phoneBook = new Array(
 // the last index is going to be
 //the (length of the Array) - 1
 //The JS Array has a property called 'length' that returns the number of elements in your array.
-const n = phoneBook.length;
-//We're letting 'n' store the total number of items in this array.
-//This will be important to keep in mind later on!!
+const n = phoneBook.length;//We're letting 'n' store the total number of items in this array.
+const lastIndex = n - 1;//This will be important to keep in mind later on!!
 
 //Look out! We're about to start printing!
 
@@ -101,36 +99,22 @@ const n = phoneBook.length;
 //checkout this article by the Mozilla Developer Network:
 //https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML#examples
 //-below is a function that prints out all the entries in our mock phone book
-function printPhoneBook(passedInPhoneBook) {
-  //The name of the function is: printPhoneBook, and inside the brackets we pass an arguement that we're calling: passedInPhoneBook
+function printPhoneBook(passedInPhoneBook) { //The name of the function is: printPhoneBook, and inside the brackets we pass an arguement that we're calling: passedInPhoneBook
 
-  const logElem = document.querySelector(".log"); //Here, we're looking in our document
-  //for an HTML element with a class="log"
-  //Technically,
-  //we could pass this string describing a class name
-  //into our printPhoneBook funciton as an additional argument.. but that's another story for another day!
-
+  const logElem = document.querySelector(".log"); //Here, we're looking in our html document for an HTML element with a class="log"
   let phoneBookIndx = 0; //-when we start printing phoneBook entries, we'll begin at the first one (where index=0)
 
-  //If you want to learn more about WHILE loops, see here:
-  //  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/while
-  while (phoneBookIndx < passedInPhoneBook.length) {
-    //-if you tinker with this one,
-    //then you may get to write your very first infinite loop!!
-
-    //The idea is that WHILE our phoneBookIndex is less than the length of the book,
-    //we'll add this html(and the variable it contains) to the innerHTML of the "log" element
+  while (phoneBookIndx < passedInPhoneBook.length) {  //If you want to learn more about WHILE loops, see here:  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/while
     logElem.innerHTML += "<li>" + passedInPhoneBook[phoneBookIndx] + "</li>";
-    // then increment the index of our array.
-    phoneBookIndx++;
+    phoneBookIndx++;    // increment the index of our array.
   } //end WHILE LOOP
 } //END printPhoneBook function
 
 //The argument for our sequentialSearch
 // is the input_id of the html input element. We're using this to store the value of the user's input.
 function sequentialSearch(input_id) {
-
   let index;
+  let comparisonCount = 0;//yes, indeed folks we're counting comparisons cuz they're not cheap!
 
   const oElem = document.getElementById(input_id);
   const outcomeElem = document.querySelector(".outcome");
@@ -156,36 +140,42 @@ function sequentialSearch(input_id) {
   const distance = parseInt(phoneBook[8] - targetValue); //if input is a number, then lets get calculating!
   console.log("distance = " + distance);
   //if distance >= 0, then don't bother with rest
-  if (distance <= 0) {
-    if (distance == 0) {//non-loop COMPARISON #1! (but it's telling us not to enter the loop!)
-      return (outcomeElem.innerHTML += outcomeMssages[1] + " didn't even have to iterate cuz it's the Max value: " + phoneBook[8] + "<br/>"); //winning outcome
+  if (distance <= 0) {//COMPARISON #1!
+    comparisonCount++;
+    if (distance == 0) {//non-loop COMPARISON #2! (but it's telling us not to enter the loop!)
+      comparisonCount++;
+      return (outcomeElem.innerHTML += outcomeMssages[1] + "comparison total: " +comparisonCount+ " didn't even have to iterate cuz it's the Max value: " + phoneBook[8] + "<br/>"); //winning outcome
     } else {
       return (outcomeElem.innerHTML +=
         "Are you kidding? That number's way too big for this list! <br/>");//input data validation should prevent this!
     }//end inner else
   } //end winner and positive check
-  else{//we've got a positive, non-zero distance
-    //so we're going to see if our default scale is sufficient for the input
-      const minProximity = distance / base ** defaultDifference;//If 0 < maxProximity < 1 THEN we start at MAX value and go down (cuz target is supposed to be less than 1 spot away)
-    console.log("minProx calculated: " + minProximity);
+  else{//we've got a positive, non-zero distance so we're going to see if our default scale is sufficient for the input
 
-    if(minProximity < 1){
-      console.log("rounded log10(distance) =" + Math.round(Math.log10(distance)));
-      const lastIndex = n - 1;
+      const minProximity = parseInt(distance / base ** defaultDifference);//If 0 < maxProximity < 1 THEN we start at MAX value and go down (cuz target is supposed to be less than 1 spot away)
+      console.log("minProx calculated: " + minProximity);
 
-      index = parseInt(Math.round(Math.log10(distance)));      //set startingIndex accordingly
-      if((lastIndex - index) <= 1) {//outta bounds check!
-        index = 0;
-      }
-    }//end minProxmitity < 1
-    else{
-      index = parseInt(distance/base**defaultDifference);
-      //now have to check for
-          if(index > n){//outta bounds check!
-            index = 0;
-          }//end check inndex > n
+      if(minProximity < 1){
+        comparisonCount++;
+        console.log("rounded log10(distance) =" + Math.round(Math.log10(distance)));
+        index = parseInt(Math.round(Math.log10(distance)));      //REMEMBER, THIS WILL NEVER BE ZERO!
+        if((lastIndex - index) <= 1) {//outta bounds check!
+          comparisonCount++;
+          index = 0;
+        }
+      }//end minProxmitity < 1 check
+      else{//minProximity >= 1,
+        //therefore default scale is fine to use so target must be at least minProx. spaces away from maxValue
+        //startIndex = .length - minProx.
+        //check that value, if it's greater than target then exit
+        index = n - minProximity;
+        //now have to check for
+            if(index > n){//outta bounds check!
+              comparisonCount++;
+              index = 0;
+            }//end check inndex > n
 
-    }//end else for inndex
+      }//end else for index
 
   }//end positive, non-zero else
 
@@ -194,30 +184,32 @@ function sequentialSearch(input_id) {
     console.log("target: " + targetValue);
 
     if (targetValue > phoneBook[index]) {
+      comparisonCount++;
         console.log(//use this to actually count comparisons instead of wtf it's doing now
-            "loop COMPARE is: " + index + " +1 =" + (index + 1) + " You gotta be at least this big if you want to iterate through the rest of this list: " +
+            "hey, it's my index: " + index + "! and this is the next one: " + (index + 1) + " You gotta be at least this big if you want to iterate through the rest of this list: " +
             phoneBook[index]
           );//
-      outcomeElem.innerHTML += outcomeMssages[2] + index + "<br/>";
+      outcomeElem.innerHTML += outcomeMssages[2] + index + " comparison total: " + comparisonCount + "<br/>";
       //we're gonna iterate!!
        index++;
     } //end ITERATION condition
     else if (targetValue == phoneBook[index]) {//we have a winner!
+      comparisonCount++;
       console.log(
-        "it's the end of the line, folks! please exit in an ORDERly fashion, even if you're not at all fashionable."
+        "it's the end of the line, folks! please exit in an ORDERly fashion, even if you're not at all fashionable. ener the total comparisons: " + comparisonCount
       );
       outcomeElem.innerHTML +=
         outcomeMssages[1] +
         " value of index: " +
         index +
-        ", target: " +
-        targetValue +
+        ", comparison total: " +
+        comparisonCount +
         "<br/>";
       break;//breaking outta the loop!
 
     } else {      //We're at the end of the loop and we haven't found it !
       outcomeElem.innerHTML =
-        outcomeMssages[0] + index + ", which is: " + phoneBook[index] + "<br/>";
+        outcomeMssages[0] + index + ", which is: " + phoneBook[index] + " comparisonCount: "+ comparisonCount +"<br/>";
       break;
     } //end last else
   } //END WHILE
