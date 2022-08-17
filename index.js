@@ -70,7 +70,7 @@ This particular tutorial is dedicated to my sister, Michy, who will always be my
 //I want you to actually look at these numbers, come up with different possible 10-digit integers
 //then think about where in the list you'd start to LOOK for that value.
 const phoneBook = new Array(
-    2895555555,
+      2895555555,
   2896666666,
   2897777777,
   4165555555,
@@ -113,14 +113,16 @@ function printPhoneBook(passedInPhoneBook) { //The name of the function is: prin
 //The argument for our sequentialSearch
 // is the input_id of the html input element. We're using this to store the value of the user's input.
 function sequentialSearch(input_id) {
+  let startingIndex;
   let index;
+  let minProxIndicator = false;
   let comparisonCount = 0;//yes, indeed folks we're counting comparisons cuz they're not cheap!
 
   const oElem = document.getElementById(input_id);
   const outcomeElem = document.querySelector(".outcome");
   outcomeElem.innerHTML = " ";
   const outcomeMssages = [
-    " Yer number ain't in the list! Fortunately, the last value we checked was at index:  ",
+    " Yer number ain't in the list! Fortunately, we started checking at index:  ",
     "we found it!",
     "Look at us! We're iterating cuz the target is bigger than the value here! indx++ ",
     "winning index =",
@@ -155,27 +157,24 @@ function sequentialSearch(input_id) {
       const minProximity = parseInt(distance / base ** defaultDifference);//If 0 < maxProximity < 1 THEN we start at MAX value and go down (cuz target is supposed to be less than 1 spot away)
       console.log("minProx calculated: " + minProximity);
 
-      if(minProximity < 1){
+      if(minProximity < 1){//this part not so sure about
         comparisonCount++;
+        minProxIndicator = true;
         console.log("rounded log10(distance) =" + Math.round(Math.log10(distance)));
         index = parseInt(Math.round(Math.log10(distance)));      //REMEMBER, THIS WILL NEVER BE ZERO!
         if((lastIndex - index) <= 1) {//outta bounds check!
           comparisonCount++;
-          index = 0;
+          index = 0;//target must be > this value, else exit cuz target ain't in list
         }
       }//end minProxmitity < 1 check
       else{//minProximity >= 1,
         //therefore default scale is fine to use so target must be at least minProx. spaces away from maxValue
         //startIndex = .length - minProx.
-        //check that value, if it's greater than target then exit
-        index = n - minProximity;
-        //now have to check for
-            if(index > n){//outta bounds check!
-              comparisonCount++;
-              index = 0;
-            }//end check inndex > n
-
-      }//end else for index
+         index = n - minProximity;//target must be at least this many spots away
+        //target must be < this value, else exit cuz target ain't in list
+        startingIndex = index;
+        console.log("startingIndex: " + startingIndex);
+      }//end else for index assignment
 
   }//end positive, non-zero else
 
@@ -183,15 +182,24 @@ function sequentialSearch(input_id) {
     console.log(" index: " + index);
     console.log("target: " + targetValue);
 
-    if (targetValue > phoneBook[index]) {
-      comparisonCount++;
-        console.log(//use this to actually count comparisons instead of wtf it's doing now
-            "hey, it's my index: " + index + "! and this is the next one: " + (index + 1) + " You gotta be at least this big if you want to iterate through the rest of this list: " +
-            phoneBook[index]
+    //AND to short-circuit! NEXT TIME CHRISTINE FORGETS JS SYNTAX FOR LOGICAL OPERATORS: &&, ||
+    if ((index>0) && ((targetValue < phoneBook[index]) || (targetValue > phoneBook[index]))) {//this is cheating a bit, cuz if first condition must be true
+      comparisonCount+=4;//adding 3 for the above conditions, as well as another in the next check (minProximity indicator below)
+        console.log(//use this to actually count comparisons
+            "hey, it's my index: " + index + "! " +
+          " here's the value: " +
+            phoneBook[index] +
+          "minProxIndicator = " + minProxIndicator
           );//
       outcomeElem.innerHTML += outcomeMssages[2] + index + " comparison total: " + comparisonCount + "<br/>";
       //we're gonna iterate!!
-       index++;
+      if(minProxIndicator){//then we need to start from index and go up
+        index++;
+      }else{//otherwise, start from index and go down
+        index--;
+      }
+      console.log("index after minProxIndicator check: " + index);
+
     } //end ITERATION condition
     else if (targetValue == phoneBook[index]) {//we have a winner!
       comparisonCount++;
@@ -207,9 +215,12 @@ function sequentialSearch(input_id) {
         "<br/>";
       break;//breaking outta the loop!
 
-    } else {      //We're at the end of the loop and we haven't found it !
+    } else {//target's not in list
+
+      //We're at the end of the loop and we haven't found it !
       outcomeElem.innerHTML =
-        outcomeMssages[0] + index + ", which is: " + phoneBook[index] + " comparisonCount: "+ comparisonCount +"<br/>";
+        outcomeMssages[0] + startingIndex + ", which is: " + phoneBook[startingIndex]
+        + " comparisonCount: "+ comparisonCount +"<br/>";
       break;
     } //end last else
   } //END WHILE
