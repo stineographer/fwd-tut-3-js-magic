@@ -70,15 +70,16 @@ This particular tutorial is dedicated to my sister, Michy, who will always be my
 //I want you to actually look at these numbers, come up with different possible 10-digit integers
 //then think about where in the list you'd start to LOOK for that value.
 const phoneBook = new Array(
-      2895555555,
-  2896666666,
-  2897777777,
-  4165555555,
-  4166666666,
-  4167777777,
+    9050000000,
+  9051111111,
+  9052222222,
+  9053333333,
+  9054444444,
   9055555555,
   9056666666,
-  9057777777
+  9057777777,
+  9058888888
+
 );
 //how values are assigned to specific spots in this JavaScript Array
 //[0] = 2895555555
@@ -160,12 +161,18 @@ function sequentialSearch(input_id) {
       if(minProximity < 1){//this part not so sure about
         comparisonCount++;
         minProxIndicator = true;
-        console.log("rounded log10(distance) =" + Math.round(Math.log10(distance)));
-        index = parseInt(Math.round(Math.log10(distance)));      //REMEMBER, THIS WILL NEVER BE ZERO!
+
+        const distanceLogged = parseInt(Math.round(Math.log10(distance)));
+            console.log("distance Logged =" + distanceLogged);
+         startingIndex = parseInt(Math.round(distance/(10**(distanceLogged - 1))));//cuz you wanna keep first digit
+          console.log("startingIndex =" +  startingIndex);
+
+        index =  startingIndex;
+
         if((lastIndex - index) <= 1) {//outta bounds check!
           comparisonCount++;
           index = 0;//target must be > this value, else exit cuz target ain't in list
-        }
+        }//end outta bounds check
       }//end minProxmitity < 1 check
       else{//minProximity >= 1,
         //therefore default scale is fine to use so target must be at least minProx. spaces away from maxValue
@@ -174,7 +181,7 @@ function sequentialSearch(input_id) {
         //target must be < this value, else exit cuz target ain't in list
         startingIndex = index;
         console.log("startingIndex: " + startingIndex);
-      }//end else for index assignment
+      }//end else minProximity check, index should be set!!!!
 
   }//end positive, non-zero else
 
@@ -183,85 +190,86 @@ function sequentialSearch(input_id) {
     console.log("target: " + targetValue);
 
     if(minProxIndicator){
-      //AND to short-circuit! NEXT TIME CHRISTINE FORGETS JS SYNTAX FOR LOGICAL OPERATORS: &&, ||
-    if ((index>0) && (targetValue > phoneBook[index])) {//this is cheating a bit, cuz if first condition must be true
-      comparisonCount+=2;//adding 2 for the above conditions
-      console.log(//use this to actually count comparisons
-            "hey, it's my index: " + index + "! " +
-          " here's the value: " +
-            phoneBook[index] +
-          "minProxIndicator = " + minProxIndicator
-          );//
-      outcomeElem.innerHTML += outcomeMssages[2] + index + " comparison total: " + comparisonCount + "<br/>";
+        //AND to short-circuit! NEXT TIME CHRISTINE FORGETS JS SYNTAX FOR LOGICAL OPERATORS: &&, ||
+        if ((index>0) && (targetValue > phoneBook[index])) {//this is cheating a bit, cuz if first condition must be true
+          comparisonCount+=2;//adding 2 for the above conditions
+          console.log(//use this to actually count comparisons
+                "hey, it's my index: " + index + "! " +
+              " here's the value: " +
+                phoneBook[index] +
+              "minProxIndicator = " + minProxIndicator
+              );//
+          outcomeElem.innerHTML += outcomeMssages[2] + index + " comparison total: " + comparisonCount + "<br/>";
 
-      //we're gonna iterate!!
-        index++;
-      console.log("index after minProxIndicator check: " + index);
+          //we're gonna iterate!!
+            index++;
+            console.log("index after minProxIndicator check: " + index);
 
-    } //end ITERATION condition
-    else if (targetValue == phoneBook[index]) {//we have a winner!
-      comparisonCount++;
-      console.log(
-        "it's the end of the line, folks! please exit in an ORDERly fashion, even if you're not at all fashionable. ener the total comparisons: " + comparisonCount
-      );
-      outcomeElem.innerHTML +=
-        outcomeMssages[1] +
-        " value of index: " +
-        index +
-        ", comparison total: " +
-        comparisonCount +
-        "<br/>";
-      break;//breaking outta the loop!
+        } //end ITERATION IF condition
+        else if (targetValue == phoneBook[index]) {//we have a winner!
+            comparisonCount++;
+            console.log(
+              "it's the end of the line, folks! please exit in an ORDERly fashion, even if you're not at all fashionable. ener the total comparisons: " + comparisonCount
+            );
+            //OUTPUT!
+            outcomeElem.innerHTML +=
+              outcomeMssages[1] +
+              " value of index: " +
+              index +
+              ", comparison total: " +
+              comparisonCount +
+              "<br/>";
 
-    } else {//target's not in list
+            break;//breaking outta this minProx loop!
 
-      //We're at the end of the loop and we haven't found it !
-      outcomeElem.innerHTML =
-        outcomeMssages[0] + startingIndex + ", which is: " + phoneBook[startingIndex]
-        + " comparisonCount: "+ comparisonCount +"<br/>";
-      break;
-      } //end last else of minProx==true
-
-    }
-    else {
-      //AND to short-circuit! NEXT TIME CHRISTINE FORGETS JS SYNTAX FOR LOGICAL OPERATORS: &&, ||
-    if ((index>0) && (targetValue < phoneBook[index])) {//this is cheating a bit, cuz if first condition must be true
-      comparisonCount+=2;//adding 3 for the above conditions, as well as another in the next check (minProximity indicator below)
-        console.log(//use this to actually count comparisons
-            "hey, it's my index: " + index + "! " +
-          " here's the value: " +
-            phoneBook[index] +
-          "minProxIndicator = " + minProxIndicator
-          );//
-      outcomeElem.innerHTML += outcomeMssages[2] + index + " comparison total: " + comparisonCount + "<br/>";
-      //we're gonna iterate!!
-       index--;
-
-      console.log("index after minProxIndicator check: " + index);
-
-    } //end ITERATION condition
-    else if (targetValue == phoneBook[index]) {//we have a winner!
-      comparisonCount++;
-      console.log(
-        "it's the end of the line, folks! please exit in an ORDERly fashion, even if you're not at all fashionable. ener the total comparisons: " + comparisonCount
-      );
-      outcomeElem.innerHTML +=
-        outcomeMssages[1] +
-        " value of index: " +
-        index +
-        ", comparison total: " +
-        comparisonCount +
-        "<br/>";
-      break;//breaking outta the loop!
-
-    } else {//target's not in list
+      } else {//target's not in list
 
       //We're at the end of the loop and we haven't found it !
       outcomeElem.innerHTML =
         outcomeMssages[0] + startingIndex + ", which is: " + phoneBook[startingIndex]
         + " comparisonCount: "+ comparisonCount +"<br/>";
-      break;
-    } //end last else of minProx==false
+        break;
+      } //end last inner else of minProx==true
+
+    }//end the first IF minProx==true
+    else {//minProximityIndicator==false
+        //AND to short-circuit! NEXT TIME CHRISTINE FORGETS JS SYNTAX FOR LOGICAL OPERATORS: &&, ||
+        if ((index>0) && (targetValue < phoneBook[index])) {//this is cheating a bit, cuz if first condition must be true
+          comparisonCount+=2;//adding 3 for the above conditions, as well as another in the next check (minProximity indicator below)
+            console.log(//use this to actually count comparisons
+                "hey, it's my index: " + index + "! " +
+              " here's the value: " +
+                phoneBook[index] +
+              "minProxIndicator = " + minProxIndicator
+              );//
+          outcomeElem.innerHTML += outcomeMssages[2] + index + " comparison total: " + comparisonCount + "<br/>";
+          //we're gonna iterate!!
+           index--;
+
+          console.log("index after minProxIndicator check: " + index);
+        } //end ITERATION condition
+        else if (targetValue == phoneBook[index]) {//we have a winner!
+          comparisonCount++;
+          console.log(
+            "it's the end of the line, folks! please exit in an ORDERly fashion, even if you're not at all fashionable. ener the total comparisons: " + comparisonCount
+          );
+          outcomeElem.innerHTML +=
+            outcomeMssages[1] +
+            " value of index: " +
+            index +
+            ", comparison total: " +
+            comparisonCount +
+            "<br/>";
+          break;//breaking outta the loop!
+
+        } else {//target's not in list
+
+          //We're at the end of the loop and we haven't found it !
+          outcomeElem.innerHTML =
+            outcomeMssages[0] + startingIndex + ", which is: " + phoneBook[startingIndex]
+            + " comparisonCount: "+ comparisonCount +"<br/>";
+          break;
+        } //end last else of minProx==false
 
     }//end final else
 
