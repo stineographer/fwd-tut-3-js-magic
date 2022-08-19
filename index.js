@@ -70,15 +70,15 @@ This particular tutorial is dedicated to my sister, Michy, who will always be my
 //I want you to actually look at these numbers, come up with different possible 10-digit integers
 //then think about where in the list you'd start to LOOK for that value.
 const phoneBook = new Array(
-    9050000000,
-  9051111111,
-  9052222222,
-  9053333333,
-  9054444444,
+      2895555555,
+  2896666666,
+  2897777777,
+  4165555555,
+  4166666666,
+  4167777777,
   9055555555,
   9056666666,
-  9057777777,
-  9058888888
+  9057777777
 
 );
 //how values are assigned to specific spots in this JavaScript Array
@@ -163,8 +163,10 @@ function sequentialSearch(input_id) {
         minProxIndicator = true;
 
         const distanceLogged = parseInt(Math.round(Math.log10(distance)));
-            console.log("distance Logged =" + distanceLogged);
-         startingIndex = parseInt(Math.round(distance/(10**(distanceLogged - 1))));//cuz you wanna keep first digit
+        console.log("distanceLogged = " + distanceLogged);
+        const tenPowerMe = 10**(distanceLogged);//wanna keep first digit!!
+            console.log("tenPowerME =" + tenPowerMe);//distance Logged =100000
+         startingIndex = Math.round(distance/tenPowerMe);//cuz you wanna keep first digit
           console.log("startingIndex =" +  startingIndex);
 
         index =  startingIndex;
@@ -197,7 +199,7 @@ function sequentialSearch(input_id) {
                 "hey, it's my index: " + index + "! " +
               " here's the value: " +
                 phoneBook[index] +
-              "minProxIndicator = " + minProxIndicator
+              " minProxIndicator = " + minProxIndicator
               );//
           outcomeElem.innerHTML += outcomeMssages[2] + index + " comparison total: " + comparisonCount + "<br/>";
 
