@@ -111,6 +111,31 @@ function printPhoneBook(passedInPhoneBook) { //The name of the function is: prin
   } //end WHILE LOOP
 } //END printPhoneBook function
 
+
+function getScale(base, totalNumbers){
+  return parseInt(base / totalNumbers);
+}
+
+function getDifference(base, scale){
+  return base - scale;
+}
+
+function getDistance(phoneBook, lastIndex, targetValue){
+ return  parseInt(phoneBook[lastIndex] - targetValue);
+}
+
+function getMinProximity(distance, base, difference){
+  return parseInt(distance / base ** difference);
+}
+
+function getDistanceLogged(distance){
+ return parseInt(Math.round(Math.log10(distance)))
+}
+
+function getMinProxStartingIndex(minProxIndicator, lastIndex, distance, tenPowered){
+    return lastIndex - Math.round(distance/tenPowered);
+}
+
 //The argument for our sequentialSearch
 // is the input_id of the html input element. We're using this to store the value of the user's input.
 function sequentialSearch(input_id) {
@@ -129,9 +154,8 @@ function sequentialSearch(input_id) {
   ];//there's only 2 possible outcomes: either the number's in the list, so we'll return the index, or it's not in the list
 
   const base = 10; //IMPORTANT FOR DETERMINING SCALE to calculate STARTING INDEX!!!
-  const defaultScale = parseInt(base / n);// if this scale is too big for input, then we'll scale down and re-compute!
-  const defaultDifference = base - defaultScale;//informs where we expect to start looking for target value
-
+  const defaultScale = getScale(base, n);// if this scale is too big for input, then we'll scale down and re-compute!
+  const defaultDifference = getDifference(base, defaultScale);//informs where we expect to start looking for target value
 
   const targetValue = parseInt(oElem.value, base); // We're designating base 10.
       if (isNaN(targetValue)) {  //if the input isn't some kind of number then lets start over
@@ -140,8 +164,8 @@ function sequentialSearch(input_id) {
       return;
   }
 
-  const distance = parseInt(phoneBook[lastIndex] - targetValue); //if input is a number, then lets get calculating!
-  console.log("distance = " + distance);
+  const distance = getDistance(phoneBook, lastIndex, targetValue); //if input is a number, then lets get calculating!
+  console.log("distance = " + distance);// We're about to get LOGICAL, AND CHRISTINE FORGETS JS SYNTAX FOR LOGICAL OPERATORS: &&, ||
   //if distance >= 0, then don't bother with rest
   if (distance <= 0) {//COMPARISON #1!
     comparisonCount++;
@@ -154,25 +178,26 @@ function sequentialSearch(input_id) {
     }//end inner else
   } //end winner and positive check
   else{//we've got a positive, non-zero distance so we're going to see if our default scale is sufficient for the input
-
-      const minProximity = parseInt(distance / base ** defaultDifference);//If 0 < maxProximity < 1 THEN we start at MAX value and go down (cuz target is supposed to be less than 1 spot away)
+       comparisonCount++;
+      const minProximity = getMinProximity(distance, base, defaultDifference);//If 0 < maxProximity < 1 THEN we start at MAX value and go down (cuz target is supposed to be less than 1 spot away)
       console.log("minProx calculated: " + minProximity);
 
-      if(minProximity < 1){//this part not so sure about
+      if(minProximity < 1){
         comparisonCount++;
         minProxIndicator = true;
 
-        const distanceLogged = parseInt(Math.round(Math.log10(distance)));
+        const distanceLogged = getDistanceLogged(distance);
         console.log("distanceLogged = " + distanceLogged);
-        const tenPowerMe = 10**(distanceLogged);//wanna keep first digit!!
-            console.log("tenPowerME =" + tenPowerMe);
-         startingIndex = lastIndex - Math.round(distance/tenPowerMe);//cuz you wanna keep first digit
+        const tenPowerered = 10**(distanceLogged);//wanna keep first digit!!
+            console.log("tenPowerME =" + tenPowerered);
+         startingIndex = getMinProxStartingIndex(minProxIndicator, lastIndex, distance, tenPowerered);//cuz you wanna keep first digit
           console.log("startingIndex =" +  startingIndex);
 
         index =  startingIndex;
 
       }//end minProxmitity < 1 check
       else{//minProximity >= 1,
+        comparisonCount++;
         //therefore default scale is fine to use so target must be at least minProx. spaces away from maxValue
         //startIndex = .length - minProx.
          startingIndex = n - minProximity;//target must be at least this many spots away
@@ -188,9 +213,9 @@ function sequentialSearch(input_id) {
     console.log("target: " + targetValue);
 
     if(minProxIndicator){
-        //AND to short-circuit! NEXT TIME CHRISTINE FORGETS JS SYNTAX FOR LOGICAL OPERATORS: &&, ||
-        if ((index>0) && (targetValue > phoneBook[index])) {//this is cheating a bit, cuz if first condition must be true
-          comparisonCount+=2;//adding 2 for the above conditions
+
+        if (targetValue > phoneBook[index]) {//this is cheating a bit, cuz if first condition must be true
+          comparisonCount++;//adding 2 for the above conditions
           console.log(//use this to actually count comparisons
                 "hey, it's my index: " + index + "! " +
               " here's the value: " +
@@ -235,8 +260,8 @@ function sequentialSearch(input_id) {
     }//end the first IF minProx==true
     else {//minProximityIndicator==false
         //AND to short-circuit! NEXT TIME CHRISTINE FORGETS JS SYNTAX FOR LOGICAL OPERATORS: &&, ||
-        if ((index>0) && (targetValue < phoneBook[index])) {//this is cheating a bit, cuz if first condition must be true
-          comparisonCount+=2;//adding 3 for the above conditions, as well as another in the next check (minProximity indicator below)
+        if (targetValue < phoneBook[index]) {//this is cheating a bit, cuz if first condition must be true
+          comparisonCount++;//adding 3 for the above conditions, as well as another in the next check (minProximity indicator below)
             console.log(//use this to actually count comparisons
                 "hey, it's my index: " + index + "! " +
               " here's the value: " +
