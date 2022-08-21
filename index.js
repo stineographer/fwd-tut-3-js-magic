@@ -124,14 +124,14 @@ function sequentialSearch(input_id) {
   outcomeElem.innerHTML = " ";
   const outcomeMssages = [
     " Yer number ain't in the list! Fortunately, we started checking at index:  ",
-    "we found it!",
-    "Look at us! We're iterating cuz the target is bigger than the value here! indx++ ",
-    "winning index =",
-  ];
+    "we found it! ",
+        "Look at us! We're iterating ! ",
+  ];//there's only 2 possible outcomes: either the number's in the list, so we'll return the index, or it's not in the list
 
   const base = 10; //IMPORTANT FOR DETERMINING SCALE to calculate STARTING INDEX!!!
   const defaultScale = parseInt(base / n);// if this scale is too big for input, then we'll scale down and re-compute!
   const defaultDifference = base - defaultScale;//informs where we expect to start looking for target value
+
 
   const targetValue = parseInt(oElem.value, base); // We're designating base 10.
       if (isNaN(targetValue)) {  //if the input isn't some kind of number then lets start over
@@ -140,7 +140,7 @@ function sequentialSearch(input_id) {
       return;
   }
 
-  const distance = parseInt(phoneBook[8] - targetValue); //if input is a number, then lets get calculating!
+  const distance = parseInt(phoneBook[lastIndex] - targetValue); //if input is a number, then lets get calculating!
   console.log("distance = " + distance);
   //if distance >= 0, then don't bother with rest
   if (distance <= 0) {//COMPARISON #1!
@@ -165,23 +165,19 @@ function sequentialSearch(input_id) {
         const distanceLogged = parseInt(Math.round(Math.log10(distance)));
         console.log("distanceLogged = " + distanceLogged);
         const tenPowerMe = 10**(distanceLogged);//wanna keep first digit!!
-            console.log("tenPowerME =" + tenPowerMe);//distance Logged =100000
-         startingIndex = Math.round(distance/tenPowerMe);//cuz you wanna keep first digit
+            console.log("tenPowerME =" + tenPowerMe);
+         startingIndex = lastIndex - Math.round(distance/tenPowerMe);//cuz you wanna keep first digit
           console.log("startingIndex =" +  startingIndex);
 
         index =  startingIndex;
 
-        if((lastIndex - index) <= 1) {//outta bounds check!
-          comparisonCount++;
-          index = 0;//target must be > this value, else exit cuz target ain't in list
-        }//end outta bounds check
       }//end minProxmitity < 1 check
       else{//minProximity >= 1,
         //therefore default scale is fine to use so target must be at least minProx. spaces away from maxValue
         //startIndex = .length - minProx.
-         index = n - minProximity;//target must be at least this many spots away
+         startingIndex = n - minProximity;//target must be at least this many spots away
         //target must be < this value, else exit cuz target ain't in list
-        startingIndex = index;
+        index = startingIndex;
         console.log("startingIndex: " + startingIndex);
       }//end else minProximity check, index should be set!!!!
 
@@ -216,7 +212,9 @@ function sequentialSearch(input_id) {
             //OUTPUT!
             outcomeElem.innerHTML +=
               outcomeMssages[1] +
-              " value of index: " +
+              " starting index: " +
+              startingIndex +
+              " ending index: " +
               index +
               ", comparison total: " +
               comparisonCount +
@@ -229,6 +227,7 @@ function sequentialSearch(input_id) {
       //We're at the end of the loop and we haven't found it !
       outcomeElem.innerHTML =
         outcomeMssages[0] + startingIndex + ", which is: " + phoneBook[startingIndex]
+        + " ending index: " + index
         + " comparisonCount: "+ comparisonCount +"<br/>";
         break;
       } //end last inner else of minProx==true
@@ -242,7 +241,7 @@ function sequentialSearch(input_id) {
                 "hey, it's my index: " + index + "! " +
               " here's the value: " +
                 phoneBook[index] +
-              "minProxIndicator = " + minProxIndicator
+              " minProxIndicator = " + minProxIndicator
               );//
           outcomeElem.innerHTML += outcomeMssages[2] + index + " comparison total: " + comparisonCount + "<br/>";
           //we're gonna iterate!!
@@ -257,7 +256,9 @@ function sequentialSearch(input_id) {
           );
           outcomeElem.innerHTML +=
             outcomeMssages[1] +
-            " value of index: " +
+            " starting index: " +
+            startingIndex +
+            " ending index: " +
             index +
             ", comparison total: " +
             comparisonCount +
@@ -268,7 +269,10 @@ function sequentialSearch(input_id) {
 
           //We're at the end of the loop and we haven't found it !
           outcomeElem.innerHTML =
-            outcomeMssages[0] + startingIndex + ", which is: " + phoneBook[startingIndex]
+            outcomeMssages[0] + startingIndex + ", which is: "
+            + phoneBook[startingIndex]
+          + " ending index: "
+          + index
             + " comparisonCount: "+ comparisonCount +"<br/>";
           break;
         } //end last else of minProx==false
