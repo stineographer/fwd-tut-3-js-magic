@@ -69,6 +69,9 @@ This particular tutorial is dedicated to my sister, Michy, who will always be my
 
 //I want you to actually look at these numbers, come up with different possible 10-digit integers
 //then think about where in the list you'd start to LOOK for that value.
+//if you wanted a real short-cut, you could always use this method that comes with the JS Array
+//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf
+//but we want to take some time to consider how a method like that works...
 const phoneBook = new Array(
       2895555555,
   2896666666,
@@ -136,6 +139,10 @@ function getMinProxStartingIndex(minProxIndicator, lastIndex, distance, tenPower
     return lastIndex - Math.round(distance/tenPowered);
 }
 
+function setOutPut(outPutMessage, index, comparisonCount){
+  return outPutMessage + index + " comparison total: " + comparisonCount + "<br/>"
+}
+
 //The argument for our sequentialSearch
 // is the input_id of the html input element. We're using this to store the value of the user's input.
 function sequentialSearch(input_id) {
@@ -148,7 +155,7 @@ function sequentialSearch(input_id) {
   const outcomeElem = document.querySelector(".outcome");
   outcomeElem.innerHTML = " ";
   const outcomeMssages = [
-    " Yer number ain't in the list! Fortunately, we started checking at index:  ",
+    " Yer number ain't in the list! current index:  ",
     "we found it! ",
         "Look at us! We're iterating ! ",
   ];//there's only 2 possible outcomes: either the number's in the list, so we'll return the index, or it's not in the list
@@ -222,7 +229,7 @@ function sequentialSearch(input_id) {
                 phoneBook[index] +
               " minProxIndicator = " + minProxIndicator
               );//
-          outcomeElem.innerHTML += outcomeMssages[2] + index + " comparison total: " + comparisonCount + "<br/>";
+            outcomeElem.innerHTML +=  setOutPut(outcomeMssages[2], index, comparisonCount);
 
           //we're gonna iterate!!
             index++;
@@ -235,43 +242,30 @@ function sequentialSearch(input_id) {
               "it's the end of the line, folks! please exit in an ORDERly fashion, even if you're not at all fashionable. ener the total comparisons: " + comparisonCount
             );
             //OUTPUT!
-            outcomeElem.innerHTML +=
-              outcomeMssages[1] +
-              " starting index: " +
-              startingIndex +
-              " ending index: " +
-              index +
-              ", comparison total: " +
-              comparisonCount +
-              "<br/>";
 
+            outcomeElem.innerHTML +=  setOutPut(outcomeMssages[1], index, comparisonCount);
             break;//breaking outta this minProx loop!
 
       } else {//target's not in list
 
       //We're at the end of the loop and we haven't found it !
-      outcomeElem.innerHTML =
-        outcomeMssages[0] + startingIndex + ", which is: " + phoneBook[startingIndex]
-        + " ending index: " + index
-        + " comparisonCount: "+ comparisonCount +"<br/>";
+         outcomeElem.innerHTML +=  setOutPut(outcomeMssages[0], index, comparisonCount);
         break;
       } //end last inner else of minProx==true
 
     }//end the first IF minProx==true
     else {//minProximityIndicator==false
-        //AND to short-circuit! NEXT TIME CHRISTINE FORGETS JS SYNTAX FOR LOGICAL OPERATORS: &&, ||
-        if (targetValue < phoneBook[index]) {//this is cheating a bit, cuz if first condition must be true
-          comparisonCount++;//adding 3 for the above conditions, as well as another in the next check (minProximity indicator below)
-            console.log(//use this to actually count comparisons
+        if (targetValue < phoneBook[index]) {
+          comparisonCount++;
+          console.log(//use this to actually count comparisons
                 "hey, it's my index: " + index + "! " +
               " here's the value: " +
                 phoneBook[index] +
               " minProxIndicator = " + minProxIndicator
               );//
-          outcomeElem.innerHTML += outcomeMssages[2] + index + " comparison total: " + comparisonCount + "<br/>";
+          outcomeElem.innerHTML +=  setOutPut(outcomeMssages[2], index, comparisonCount);
           //we're gonna iterate!!
            index--;
-
           console.log("index after minProxIndicator check: " + index);
         } //end ITERATION condition
         else if (targetValue == phoneBook[index]) {//we have a winner!
@@ -279,26 +273,12 @@ function sequentialSearch(input_id) {
           console.log(
             "it's the end of the line, folks! please exit in an ORDERly fashion, even if you're not at all fashionable. ener the total comparisons: " + comparisonCount
           );
-          outcomeElem.innerHTML +=
-            outcomeMssages[1] +
-            " starting index: " +
-            startingIndex +
-            " ending index: " +
-            index +
-            ", comparison total: " +
-            comparisonCount +
-            "<br/>";
+          outcomeElem.innerHTML +=  setOutPut(outcomeMssages[1], index, comparisonCount);
           break;//breaking outta the loop!
 
         } else {//target's not in list
-
+          outcomeElem.innerHTML +=  setOutPut(outcomeMssages[0], index, comparisonCount);
           //We're at the end of the loop and we haven't found it !
-          outcomeElem.innerHTML =
-            outcomeMssages[0] + startingIndex + ", which is: "
-            + phoneBook[startingIndex]
-          + " ending index: "
-          + index
-            + " comparisonCount: "+ comparisonCount +"<br/>";
           break;
         } //end last else of minProx==false
 
